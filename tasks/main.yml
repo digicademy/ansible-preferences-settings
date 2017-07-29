@@ -1,0 +1,28 @@
+---
+- name: Update .bashrc for root (and possibly other users) with aliases and color settings
+  blockinfile:
+    dest: "{{ item.path }}"
+    state: present
+    block: "{{ bashrc_lines }}"
+  with_items: "{{ bashrc_users }}"
+
+- name: Create/Update .vimrc for root (and possibly other users) with default preferences
+  template:
+    src: vimrc.j2
+    dest: "{{ item.path }}"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: u=rw,g=r,o=r
+    force: yes
+  with_items: "{{ vimrc_users }}"
+
+- name: Create/Update .forward for root
+  lineinfile:
+    dest: /root/.forward
+    line: "{{ root_email_forward }}"
+    state: present
+    create: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  when: root_email_forward is defined

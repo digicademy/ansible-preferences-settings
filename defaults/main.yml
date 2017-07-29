@@ -1,0 +1,21 @@
+---
+bashrc_users:
+  - { name: "root", path: "/root/.bashrc" }
+
+bashrc_ipinterface: "eth0"
+
+bashrc_lines: |
+    # path
+    MYIP=$(ip -f inet -o addr show {{ bashrc_ipinterface }}|cut -d\  -f 7 | cut -d/ -f 1)
+    export PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\] ($MYIP) \w \$\[\033[00m\] '
+    # aliases
+    alias l='ls -lA'
+    # colors
+    export TERM=xterm-color
+    export CLICOLOR=1
+    export LSCOLORS=ExGxFxdxCxDxDxBxBxExEx
+
+vimrc_users:
+  - { name: "root", path: "/root/.vimrc" }
+
+# root_email_forward: ""
